@@ -6,12 +6,11 @@ git clone https://github.com/GengWei1997/linux.git --branch raphael-$1 --depth 1
 cd linux
 
 # 下载内核配置文件
-wget -P arch/arm64/configs https://raw.githubusercontent.com/12378mi/kernel-deb/refs/heads/main/raphael.config
+wget -P arch/arm64/configs https://raw.githubusercontent.com/GengWei1997/kernel-deb/refs/heads/main/raphael.config
 
 # 生成内核配置
-# make -j$(nproc) ARCH=arm64 LLVM=1 defconfig raphael.config
-make -j$(nproc) ARCH=arm64 LLVM=1 raphael.config
-make -j$(nproc) ARCH=arm64 LLVM=1 olddefconfig
+make -j$(nproc) ARCH=arm64 LLVM=1 defconfig raphael.config
+
 # 编译内核
 make -j$(nproc) ARCH=arm64 LLVM=1
 
@@ -23,18 +22,7 @@ mkdir -p ../linux-xiaomi-raphael/boot/dtbs/qcom
 
 # 复制内核文件
 cp arch/arm64/boot/vmlinuz.efi ../linux-xiaomi-raphael/boot/vmlinuz-$_kernel_version
-# 创建设备树目录
-mkdir -p ../linux-xiaomi-raphael/boot/dtbs/qcom
-
-# 查找并复制所有 sm8150 相关设备树
-find arch/arm64/boot/dts -name "*sm8150*" -type f -exec cp {} ../linux-xiaomi-raphael/boot/dtbs/qcom/ \;
-
-# 如果找不到，尝试从构建目录复制
-if [ ! -f ../linux-xiaomi-raphael/boot/dtbs/qcom/sm8150-raphael.dtb ]; then
-    # 从内核构建输出目录复制
-    cp arch/arm64/boot/dts/qcom/*.dtb ../linux-xiaomi-raphael/boot/dtbs/qcom/ 2>/dev/null || true
-fi
-
+cp arch/arm64/boot/dts/qcom/sm8150*.dtb ../linux-xiaomi-raphael/boot/dtbs/qcom
 cp .config ../linux-xiaomi-raphael/boot/config-$_kernel_version
 
 # 更新 deb 包控制文件中的版本号
@@ -43,7 +31,7 @@ sed -i "s/Version:.*/Version: ${_kernel_version}/" ../linux-xiaomi-raphael/DEBIA
 # 清理并安装内核模块
 rm -rf ../linux-xiaomi-raphael/lib
 make -j$(nproc) ARCH=arm64 LLVM=1 INSTALL_MOD_PATH=../linux-xiaomi-raphael modules_install
-#rm ../linux-xiaomi-raphael/lib/modules/**/build
+rm ../linux-xiaomi-raphael/lib/modules/**/build
 
 cd ..
 
