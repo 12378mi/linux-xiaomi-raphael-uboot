@@ -43,7 +43,7 @@ sed -i "s/Version:.*/Version: ${_kernel_version}/" ../linux-xiaomi-raphael/DEBIA
 # 清理并安装内核模块
 rm -rf ../linux-xiaomi-raphael/lib
 make -j$(nproc) ARCH=arm64 LLVM=1 INSTALL_MOD_PATH=../linux-xiaomi-raphael modules_install
-rm ../linux-xiaomi-raphael/lib/modules/**/build
+#rm ../linux-xiaomi-raphael/lib/modules/**/build
 
 cd ..
 
