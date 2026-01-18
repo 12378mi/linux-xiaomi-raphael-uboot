@@ -23,7 +23,18 @@ mkdir -p ../linux-xiaomi-raphael/boot/dtbs/qcom
 
 # 复制内核文件
 cp arch/arm64/boot/vmlinuz.efi ../linux-xiaomi-raphael/boot/vmlinuz-$_kernel_version
-cp arch/arm64/boot/dts/qcom/sm8150*.dtb ../linux-xiaomi-raphael/boot/dtbs/qcom
+# 创建设备树目录
+mkdir -p ../linux-xiaomi-raphael/boot/dtbs/qcom
+
+# 查找并复制所有 sm8150 相关设备树
+find arch/arm64/boot/dts -name "*sm8150*" -type f -exec cp {} ../linux-xiaomi-raphael/boot/dtbs/qcom/ \;
+
+# 如果找不到，尝试从构建目录复制
+if [ ! -f ../linux-xiaomi-raphael/boot/dtbs/qcom/sm8150-raphael.dtb ]; then
+    # 从内核构建输出目录复制
+    cp arch/arm64/boot/dts/qcom/*.dtb ../linux-xiaomi-raphael/boot/dtbs/qcom/ 2>/dev/null || true
+fi
+
 cp .config ../linux-xiaomi-raphael/boot/config-$_kernel_version
 
 # 更新 deb 包控制文件中的版本号
