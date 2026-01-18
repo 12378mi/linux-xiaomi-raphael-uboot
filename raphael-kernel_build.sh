@@ -7,11 +7,11 @@ cd linux
 
 # 下载内核配置文件
 wget -P arch/arm64/configs https://raw.githubusercontent.com/12378mi/kernel-deb/refs/heads/main/raphael.config
-make -j$(nproc) ARCH=arm64 LLVM=1 raphael.config
-make -j$(nproc) ARCH=arm64 LLVM=1 olddefconfig
+
 # 生成内核配置
 # make -j$(nproc) ARCH=arm64 LLVM=1 defconfig raphael.config
-
+make -j$(nproc) ARCH=arm64 LLVM=1 raphael.config
+make -j$(nproc) ARCH=arm64 LLVM=1 olddefconfig
 # 编译内核
 make -j$(nproc) ARCH=arm64 LLVM=1
 
