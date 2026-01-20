@@ -2,7 +2,7 @@
 set -e  # 遇到错误立即退出
 
 # 克隆指定版本的内核源码
-git clone https://github.com/GengWei1997/linux.git --branch raphael-$1 --depth 1 linux
+git clone https://github.com/12378mi/linux.git --branch raphael-$1 --depth 1 linux
 cd linux
 
 # 下载内核配置文件
