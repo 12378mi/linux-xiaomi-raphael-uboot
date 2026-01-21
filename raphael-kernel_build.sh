@@ -6,7 +6,7 @@ git clone https://github.com/12378mi/linux.git --branch raphael-$1 --depth 1 lin
 cd linux
 
 # 下载内核配置文件
-wget -P arch/arm64/configs https://raw.githubusercontent.com/12378mi/kernel-deb/main/raphael.config 
+wget -P arch/arm64/configs https://raw.githubusercontent.com/12378mi/kernel-deb/refs/heads/main/raphael.config
 
 # 生成内核配置
 make -j$(nproc) ARCH=arm64 LLVM=1 defconfig raphael.config
